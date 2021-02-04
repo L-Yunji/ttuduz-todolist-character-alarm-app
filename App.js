@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, StyleSheet, TextInput, View, Text} from 'react-native';
+import {SafeAreaView, StyleSheet, TextInput, View, Text, Image, ScrollView} from 'react-native';
 
 const App = () => {
   return (
@@ -8,8 +8,9 @@ const App = () => {
           width: 360,
           height: 64,
           backgroundColor: "#fff",
-          marginBottom: 16
-    }}><Text style={styles.characterName}>낑이</Text></View>
+          marginBottom: 16}}>
+            
+            <Text style={styles.characterName}>낑이</Text></View>
 
     <View style={{
           width: 242,
@@ -18,8 +19,14 @@ const App = () => {
           alignItems: "center",
           backgroundColor: "#ffffff",
           marginBottom: 12
-          }}></View>
-       <View style={styles.card}></View>
+          }}>
+
+          <Image
+            style={{width: 160, height: 211, marginTop: 17}}
+            source={require('./character_png/rabbit_body.png')} />
+            </View>
+       <View style={styles.card}>
+          <TextInput style={styles.input}/></View>
     </SafeAreaView>
   );
 };
@@ -49,12 +56,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     width: 360,
     height: 283,
-    borderTopLeftRadius: 30, // to provide rounded corners
-    borderTopRightRadius: 30, // to provide rounded corners
+    borderTopLeftRadius: 30, 
+    borderTopRightRadius: 30, 
     marginLeft: 0,
     marginRight: 0
-
-  }
+  },
+  input: {
+    width: 296,
+    height: 42,
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderRadius: 22,
+    borderBottomColor: '#9e9e9e',
+    fontSize: 14,
+    marginTop: 52,
+    marginLeft: 32,
+    marginRight: 32
+  },
 });
 
 export default App;
