@@ -1,11 +1,18 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Alert, YellowBox } from 'react-native';
+import React, { useState } from 'react';
+import { Modal, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Alert, YellowBox, TouchableHighlight } from 'react-native';
 import Carousel from 'react-native-carousel-control';
-import Modal from 'react-native-modal';
-
 
 //20200205 modified
 export default class App extends React.Component {
+
+  state={
+    isVisible:false
+  };
+
+  displayModal(show){
+    this.setState({isVisible:show})
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -13,15 +20,8 @@ export default class App extends React.Component {
           <Text>네비게이터 적용해 줄 공간입니다.</Text>
         </View>
         <View style={styles.circleindicator}>
-          <TouchableOpacity onPress={() => Alert.alert('캐릭터')}
-            style={styles.characterbutton}>
-            <Image
-              source={{
-                uri: 'https://i.pinimg.com/originals/84/88/4d/84884d4d70ed594f8da917371a5fa6bb.gif'
-              }}
-              style={{ width: 40, height: 40, borderRadius: 100 }}
-            />
-          </TouchableOpacity>
+
+
           <TouchableOpacity onPress={() => Alert.alert('캐릭터')}
             style={styles.characterbutton}>
             <Image
@@ -101,34 +101,99 @@ export default class App extends React.Component {
 
         </View>
         <View style={styles.cardview}>
-          <TouchableOpacity onPress={() => Alert.alert('번호')}
-            style={styles.charactercard}>
 
-            <Carousel pageStyle={{ backgroundColor: "white", borderRadius: 5, height: 260, width: 188 }}>
-              <TouchableOpacity>
+          <Carousel pageStyle={{ backgroundColor: "white", height: 260, width: 188 }}>
+            <TouchableOpacity>
               <Image
-              source={{
-                uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU'
-              }}
-              style={{ width: 154, height: 203}}
-            />
+                source={{
+                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU'
+                }}
+                style={{ width: 154, height: 203 }}
+              />
+              <Text>1번적용.......</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Alert.alert('모달화면 띄우기')}>
+              <Image
+                source={{
+                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU'
+                }}
+                style={{ width: 154, height: 203 }}
+              />
               <Text>몽몽</Text>
-              
-              </TouchableOpacity>
-              <Text>2</Text>
-              <Text>3</Text>
-              <Text>4</Text>
-              <Text>5</Text>
-              <Text>추가</Text>
-            </Carousel>
-          </TouchableOpacity>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Alert.alert('모달화면 띄우기')}>
+              <Image
+                source={{
+                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU'
+                }}
+                style={{ width: 154, height: 203 }}
+              />
+              <Text>몽몽</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => Alert.alert('모달화면 띄우기')}>
+              <Image
+                source={{
+                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU'
+                }}
+                style={{ width: 154, height: 203 }}
+              />
+              <Text>몽몽</Text>
+            </TouchableOpacity>
 
+
+          </Carousel>
+
+          <Text>Indicator자리</Text>
+          <TouchableOpacity
+            onPress={() => {
+              this.displayModal(true);
+            }}
+            style={styles.categorybutton}>
+            <Text>사전</Text>
+          </TouchableOpacity>
 
         </View>
         <View style={styles.navigator}>
           <Text>네비게이터 적용해 줄 공간입니다.</Text>
+          
         </View>
+
+
+      <Modal
+      animationType={'fade'}
+      transparent={true}
+      visible={this.state.isVisible}
+      onRequestClose={()=>{
+        Alert.alert('Modal is closed');
+      }}
+      
+      >
+        <View style={{
+          flex:1,
+          flexDirection:'column',
+          justifyContent:'center',
+          alignItems:'center',
+          backgroundColor:'rgba(0,0,0,0.5)'
+        }}>
+          <View style={{
+            backgroundColor:'#fff',
+            width:300,
+            height:300,
+            borderRadius:10,
+          }}>
+        <Text>캐릭터 사진</Text>
+        <Text>설명 : 달수리는 물에 사는~~~</Text>
+
+        <Text onPress={()=>{this.displayModal(!this.state.isVisible);}}>닫기</Text>
+          </View>
+        </View>
+
+      </Modal>
+
       </View>
+
+    
+
     );
   }
 }
@@ -165,11 +230,12 @@ const styles = StyleSheet.create({
   },
   charactercard: {
     marginTop: 32,
-    marginLeft:17,
-    marginRight:17,
-    alignItems:'center',
+    marginLeft: 17,
+    marginRight: 17,
+    alignItems: 'center',
     justifyContent: 'center',
   },
+
 
 
   navigator: {
