@@ -1,85 +1,61 @@
-import * as React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import React, { Component } from 'react';
+import {View, StyleSheet, Text} from 'react-native';
+import Calendar from './components/calendarItem';
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
-  );
+export default class App extends Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}><Text>header</Text></View>
+        <View style={styles.calendar}>
+          <Calendar />
+        </View>
+        <View style={styles.content}><Text>content</Text></View>
+        <View style={styles.nav}><Text>nav</Text></View>
+      </View>
+    );
+  }
 }
 
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
-    </View>
-  );
-}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#eeeeee',
+  },
+  header: {
+    width:'100%',
+    height:'10%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+  },
 
-function MyTabBar({ state, descriptors, navigation }) {
-  return (
-    <View style={{ flex:0.1, flexDirection: 'row' , justifyContent:'center',alignItems:'stretch'}}>
-      {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
-
-        const isFocused = state.index === index;
-
-        const onPress = () => {
-          const event = navigation.emit({
-            type: 'tabPress',
-            target: route.key,
-          });
-
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-        };
-
-        const onLongPress = () => {
-          navigation.emit({
-            type: 'tabLongPress',
-            target: route.key,
-          });
-        };
-
-        return (
-          <TouchableOpacity
-            accessibilityRole="button"
-            accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
-            onPress={onPress}
-            onLongPress={onLongPress}
-            style={{ flex: 1 }}
-          >
-            <Text style={{ color: isFocused ? '#673ab7' : '#222' }}>
-              {label}
-            </Text>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
-  );
-}
-
-const Tab = createBottomTabNavigator();
-
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
-}
+  calendar: {
+    flex : 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderRadius: 16, // to provide rounded corners
+    marginLeft: 32,
+    marginRight: 32,
+    marginBottom: 15,
+    marginTop: 16,
+  },
+  content: {
+    width:'100%',
+    height:'35%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ffffff',
+    borderTopLeftRadius: 30, // to provide rounded corners
+    borderTopRightRadius: 30, // to provide rounded corners
+  },
+  nav: {
+    width:'100%',
+    height:'8%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1ad657',
+  },
+});
