@@ -1,18 +1,68 @@
 import React, { useState } from 'react';
 import { ScrollView, Modal, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Alert, YellowBox, TouchableHighlight } from 'react-native';
-import Carousel from 'react-native-carousel-control';
 import Feather from 'react-native-vector-icons/Feather';
+import Carousel from 'react-native-snap-carousel';
 
-//20200205 modified
 export default class App extends React.Component {
-
   state = {
     isVisible: false
   };
 
+  state2={
+    isVisible:false
+  }
   displayModal(show) {
     this.setState({ isVisible: show })
   }
+
+  constructor(props) {
+    super(props);
+    this.state2 = {
+      activeIndex: 0,
+      carouselItems: [
+        {
+          title: "Item 1",
+          text: "펭귄 펭귄",
+        },
+        {
+          title: "Item 2",
+          text: "판다설명.....",
+        },
+        {
+          title: "Item 3",
+          text: "Text 3",
+        },
+        {
+          title: "Item 4",
+          text: "Text 4",
+        },
+        {
+          title: "Item 5",
+          text: "Text 5",
+        },
+      ]
+    }
+  }
+
+  _renderItem({ item, index }) {
+    return (
+      <View style={{
+        backgroundColor: 'green',
+        borderRadius: 30,
+        height: 250,
+        padding: 50,
+        marginTop:10,
+        marginLeft: 25,
+        marginRight: 25,
+      }}>
+        <Text style={{ fontSize: 30 }}>{item.title}</Text>
+        <Text>{item.text}</Text>
+      </View>
+
+    )
+  }
+
+
 
 
 
@@ -20,19 +70,16 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text>네비게이션 부분입니다.</Text>
-          
+          <Text>네비게이션 부분</Text>
         </View>
         <View style={styles.circleindicator}>
-
-
           <TouchableOpacity onPress={() => Alert.alert('캐릭터')}
             style={styles.characterbutton}>
             <Image
               source={
                 require('./characterimage/강.png')
               }
-              style={{ width: 37, height: 30}}
+              style={{ width: 37, height: 30 }}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => Alert.alert('캐릭터')}
@@ -41,16 +88,16 @@ export default class App extends React.Component {
               source={
                 require('./characterimage/수.png')
               }
-              style={{ width: 37, height: 30}}
+              style={{ width: 37, height: 30 }}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => Alert.alert('캐릭터')}
             style={styles.characterbutton}>
             <Image
               source={
-                require('./characterimage/토원본귀.png')
+                require('./characterimage/토.png')
               }
-              style={{ width: 37, height: 30}}
+              style={{ width: 37, height: 30 }}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => Alert.alert('캐릭터')}
@@ -59,7 +106,7 @@ export default class App extends React.Component {
               source={
                 require('./characterimage/판.png')
               }
-              style={{ width: 37, height: 30}}
+              style={{ width: 37, height: 30 }}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => Alert.alert('캐릭터')}
@@ -68,13 +115,11 @@ export default class App extends React.Component {
               source={
                 require('./characterimage/펭.png')
               }
-              style={{ width: 37, height: 30}}
+              style={{ width: 37, height: 30 }}
             />
           </TouchableOpacity>
-  
-
         </View>
-        
+
         <View style={styles.category}>
 
           <TouchableOpacity
@@ -102,61 +147,26 @@ export default class App extends React.Component {
             style={styles.categorybutton}>
             <Text>기타</Text>
           </TouchableOpacity>
-
-
-
-
         </View>
         <View style={styles.cardview}>
 
-          <Carousel pageStyle={{ backgroundColor: "white", height: 260, width: 188 }}
-          >
-            <TouchableOpacity>
-              <Image
-                source={{
-                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU'
-                }}
-                style={{ width: 154, height: 203 }}
-              />
-              <Text>1번적용.......</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => Alert.alert('모달화면 띄우기')}>
-              <Image
-                source={{
-                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU'
-                }}
-                style={{ width: 154, height: 203 }}
-              />
-              <Text>몽몽</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => Alert.alert('모달화면 띄우기')}>
-              <Image
-                source={{
-                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU'
-                }}
-                style={{ width: 154, height: 203 }}
-              />
-              <Text>몽</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => Alert.alert('모달화면 띄우기')}>
-              <Image
-                source={{
-                  uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK0UZUOTlXVlH90c5kSpdzwLiIcRAYTUr4oA&usqp=CAU'
-                }}
-                style={{ width: 154, height: 203 }}
-              />
-              <Text>몽몽</Text>
-            </TouchableOpacity>
-
-
-          </Carousel>
-          <Text>Indicator자리</Text>
+          <Carousel
+          layout={'default'}
+          ref={ref=>this.carousel=ref}
+          data={this.state2.carouselItems}
+          sliderWidth={300}
+          itemWidth={300}
+          renderItem={this._renderItem}
+          onSnapToItem={index=>this.setState(
+            {activeIndex:index})}/>
+          
+          <Text>dot indicatords를 넣어주기</Text>
           <TouchableOpacity
             onPress={() => {
               this.displayModal(true);
             }}
             style={styles.categorybutton}>
-          <Feather name={'book-open'} size={25} color={'black'}/>
+            <Feather name={'book-open'} size={25} color={'black'} />
           </TouchableOpacity>
 
         </View>
@@ -164,8 +174,6 @@ export default class App extends React.Component {
           <Text>네비게이터 적용해 줄 공간입니다.</Text>
 
         </View>
-
-
         <Modal
           animationType={'fade'}
           transparent={true}
@@ -173,7 +181,6 @@ export default class App extends React.Component {
           onRequestClose={() => {
             Alert.alert('Modal is closed');
           }}
-
         >
           <View style={{
             flex: 1,
@@ -207,8 +214,6 @@ export default class App extends React.Component {
 
       </View>
 
-
-
     );
   }
 }
@@ -221,7 +226,7 @@ const styles = StyleSheet.create({
     height: 64,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: 'gray',
+    backgroundColor: 'white',
   },
   circleindicator: {
     height: 72,
@@ -238,8 +243,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     elevation: 2,
   },
-
-
   cardview: {
     height: 390,
     alignItems: 'center',
@@ -261,7 +264,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    backgroundColor: 'gray',
+    backgroundColor: 'white',
   },
 
   //button component

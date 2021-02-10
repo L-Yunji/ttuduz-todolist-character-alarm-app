@@ -1,5 +1,5 @@
 {
-  "name": "ttuduzcharacter",
+  "name": "ttuduzcharacterkim",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -12,10 +12,6 @@
   "dependencies": {
     "react": "16.13.1",
     "react-native": "0.63.4",
-    "react-native-carousel-control": "2.0.1",
-    "react-native-category": "1.0.4",
-    "react-native-elements": "3.1.0",
-    "react-native-modal": "11.6.1",
     "react-native-snap-carousel": "3.9.1",
     "react-native-vector-icons": "8.0.0"
   },
