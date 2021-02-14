@@ -1,72 +1,110 @@
 import React, { useState } from 'react';
-import { ScrollView, Modal, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Alert, YellowBox, TouchableHighlight } from 'react-native';
+import { ScrollView, Modal, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, Button, Alert, YellowBox, TouchableHighlight, Dimensions, BackHandler } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
-import Carousel from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 
 export default class App extends React.Component {
   state = {
-    isVisible: false
+    isVisible: false,
   };
 
-  state2={
-    isVisible:false
-  }
+
   displayModal(show) {
     this.setState({ isVisible: show })
   }
 
+
   constructor(props) {
     super(props);
-    this.state2 = {
-      activeIndex: 0,
+    this.state2 = { // cardview 관련 state2.
+      index: 0, // 카드뷰 인덱스
+      activeSlide:0,
+
+      //image url 추가
       carouselItems: [
         {
-          title: "Item 1",
+          key: 'dog',
+          title: "Item",
           text: "펭귄 펭귄",
+
         },
         {
+          key: 'sudal',
           title: "Item 2",
-          text: "판다설명.....",
+          text: "판다설명",
         },
         {
+          key: 'rabbit',
           title: "Item 3",
           text: "Text 3",
         },
         {
+          key: 'panda',
           title: "Item 4",
           text: "Text 4",
         },
         {
+          key: 'penguin',
           title: "Item 5",
           text: "Text 5",
         },
+
       ]
     }
   }
 
+
+
   _renderItem({ item, index }) {
     return (
       <View style={{
-        backgroundColor: 'green',
-        borderRadius: 30,
-        height: 250,
-        padding: 50,
-        marginTop:10,
-        marginLeft: 25,
-        marginRight: 25,
+        backgroundColor: 'white',
+        borderColor: 'black',
+        elevation:5,
+        borderRadius: 15,
+        height: 260,
+        width: 188,
+        padding: 30,
+        //여기서부터 custom
+        marginTop: 32,
       }}>
         <Text style={{ fontSize: 30 }}>{item.title}</Text>
         <Text>{item.text}</Text>
+        <Text>현재 인덱스:{index + 1}</Text>
       </View>
-
     )
   }
 
+  get pagination() {
 
 
+    const { carouselItems, activeSlide } = this.state2;
+    return (
+      <Pagination
+        dotsLength={carouselItems.length}
+        activeDotIndex={activeSlide}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginHorizontal: 8,
+          backgroundColor: 'black'
+        }}
+        inactiveDotStyle={{
+          backgroundColor: 'gray',
+        }}
+        inactiveDotOpacity={0.2}
+        inactiveDotScale={0.6}
+      />
+    );
+  }
 
+  onChangeText = () => {
+    activeindex
+  }
 
   render() {
+
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -118,6 +156,16 @@ export default class App extends React.Component {
               style={{ width: 37, height: 30 }}
             />
           </TouchableOpacity>
+          <TouchableOpacity onPress={() => Alert.alert('캐릭터')}
+            style={styles.characterplusbutton}>
+            <Image
+              source={
+                require('./characterimage/537.png')
+              }             
+               style={{ height:56, width:56 }}
+            />
+          </TouchableOpacity>
+
         </View>
 
         <View style={styles.category}>
@@ -147,34 +195,45 @@ export default class App extends React.Component {
             style={styles.categorybutton}>
             <Text>기타</Text>
           </TouchableOpacity>
+
+
+          
         </View>
         <View style={styles.cardview}>
 
-          <Carousel
-          layout={'default'}
-          ref={ref=>this.carousel=ref}
-          data={this.state2.carouselItems}
-          sliderWidth={300}
-          itemWidth={300}
-          renderItem={this._renderItem}
-          onSnapToItem={index=>this.setState(
-            {activeIndex:index})}/>
+
+          <View>
+            <Carousel
+              layout={'default'}
+              ref={ref => this.carousel = ref}
+              data={this.state2.carouselItems}
+              sliderWidth={400}
+              itemWidth={200}
+              renderItem={this._renderItem}
+              onSnapToItem={(index) =>
+                this.setState(
+                  {
+                    activeSlide: index
+                  })
+                
+              }
+
+              inactiveSlideOpacity={1}
+
+            >
+            </Carousel>
+              {this.pagination}
+          </View>
           
-          <Text>dot indicatords를 넣어주기</Text>
+          
           <TouchableOpacity
             onPress={() => {
               this.displayModal(true);
             }}
-            style={styles.categorybutton}>
-            <Feather name={'book-open'} size={25} color={'black'} />
+            style={styles.modalbutton}>
+            <Feather name={'book-open'} size={16} color={'#9e9e9e'} />
           </TouchableOpacity>
-
-        </View>
-        <View style={styles.navigator}>
-          <Text>네비게이터 적용해 줄 공간입니다.</Text>
-
-        </View>
-        <Modal
+          <Modal
           animationType={'fade'}
           transparent={true}
           visible={this.state.isVisible}
@@ -182,6 +241,7 @@ export default class App extends React.Component {
             Alert.alert('Modal is closed');
           }}
         >
+
           <View style={{
             flex: 1,
             flexDirection: 'column',
@@ -191,17 +251,11 @@ export default class App extends React.Component {
           }}>
             <View style={{
               backgroundColor: '#fff',
-              width: 300,
-              height: 300,
-              borderRadius: 10,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 4,
-                height: 1,
-              },
-              shadowOpacity: 0.1,
-              shadowRadius: 1.00,
-              elevation: 24,
+              width: 265,
+              height: 366,
+              borderRadius: 15,
+
+              elevation: 3,
             }}>
               <Text>캐릭터 사진</Text>
               <Text>설명 : 달수리는 물에 사는~~~</Text>
@@ -211,7 +265,19 @@ export default class App extends React.Component {
           </View>
 
         </Modal>
+        </View>
+        <View style={styles.navigator}>
 
+        </View>
+
+
+
+
+
+
+
+
+ 
       </View>
 
     );
@@ -221,12 +287,12 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
   },
   header: {
     height: 64,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: 'white',
   },
   circleindicator: {
     height: 72,
@@ -244,10 +310,10 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   cardview: {
-    height: 390,
+    height: 376,
     alignItems: 'center',
     justifyContent: 'center',
-
+    marginBottom:40,
   },
   charactercard: {
     marginTop: 32,
@@ -256,29 +322,43 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
-
-
   navigator: {
-    height: 52,
-    flex: 1,
+    height: 56,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    backgroundColor: 'white',
+    borderColor:'black',
+    elevation:5,
   },
+
 
   //button component
 
   // 캐릭터 버튼
-  characterbutton: {
+  characterbutton: { //hightlighted 된거 나타내는 style 요소
     height: 48,
     width: 48,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 8,
     padding: 10,
-    borderWidth: 1,
     borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 100,
+  },
+  characterbuttonselected: { //hightlighted 된거 나타내는 style 요소
+    height: 48,
+    width: 48,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 8,
+    padding: 10,
+    borderColor: 'red',
+    borderWidth: 3,
+    borderRadius: 100,
+  },
+  characterplusbutton:{ // 캐릭터 얼굴 칸 마지막 plus 버튼 + 
+
+    marginTop: 8,
     borderRadius: 100,
   },
   characteraddbutton: {
@@ -289,7 +369,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     padding: 0,
     borderWidth: 1,
-    borderColor: 'black',
     borderRadius: 100,
   },
 
@@ -304,6 +383,19 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 20,
   },
+
+  modalbutton: {
+    height: 24,
+    width: 58,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderColor: 'black',
+
+    borderRadius: 20,
+    backgroundColor:'#eeeeee',
+  },
+
 
 
 
